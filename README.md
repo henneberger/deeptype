@@ -53,7 +53,7 @@ python3 extraction/evaluate_type_system.py extraction/configs/en_disambiguator_c
 ```bash
 export DATA_DIR=data/
 python3 extraction/produce_wikidata_tsv.py extraction/configs/en_disambiguator_config_export_small.json --relative_to ${DATA_DIR} sample_data.tsv
-python3 learning/evaluate_learnability.py sample_data.tsv --out report.json --wikidata ${DATA_DIR}wikidata/
+python3 learning/evaluate_learnability.py --dataset sample_data.tsv --out report.json --wikidata ${DATA_DIR}wikidata/
 ```
 
 See `learning/LearnabilityStudy.ipynb` for a visual analysis of the AUC scores.
@@ -61,7 +61,7 @@ See `learning/LearnabilityStudy.ipynb` for a visual analysis of the AUC scores.
 ### Evolve a type system
 
 ```bash
-python3 extraction/evolve_type_system.py extraction/configs/en_disambiguator_config_export_small.json --relative_to ${DATA_DIR}  --method cem  --penalty 0.00007
+python3 extraction/evolve_type_system.py extraction/configs/en_disambiguator_config_export_small.json report.json --relative_to ${DATA_DIR}  --method cem  --penalty 0.00007
 ```
 Method can be `cem`, `greedy`, `beam`, or `ga`, and penalty is the soft constraint on the size of the type system (lambda in the paper).
 
@@ -75,7 +75,7 @@ For each language create a training file:
 
 ```
 export LANGUAGE=en
-python3 extraction/produce_wikidata_tsv.py extraction/configs/${LANGUAGE}_disambiguator_config_export.json /Volumes/Samsung_T3/tahiti/2017-12/${LANGUAGE}_train.tsv  --relative_to /Volumes/Samsung_T3/tahiti/2017-12/
+python3 extraction/produce_wikidata_tsv.py extraction/configs/${LANGUAGE}_disambiguator_config_export.json ${DATA_DIR}${LANGUAGE}_train.tsv  --relative_to ${DATA_DIR}
 ```
 
 Then create an H5 file from each language containing the mapping from tokens to their entity ids in Wikidata:
