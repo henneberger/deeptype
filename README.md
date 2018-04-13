@@ -7,7 +7,26 @@ Authors: Jonathan Raiman & Olivier Raiman
 
 Our latest approach to learning symbolic structures from data allows us to discover a set of task specific constraints on a neural network in the form of a type system, to guide its understanding of documents, and obtain state of the art accuracy at [recognizing entities in natural language](https://en.wikipedia.org/wiki/Entity_linking). Recognizing entities in documents can be quite challenging since there are often millions of possible answers. However, when using a type system to constrain the options to only those that semantically "type check," we shrink the answer set and make the problem dramatically easier to solve. Our new results suggest that learning types is a very strong signal for understanding natural language: if types were given to us by an oracle, we find that it is possible to obtain accuracies of 98.6-99% on two benchmark tasks [CoNLL (YAGO)](https://www.mpi-inf.mpg.de/departments/databases-and-information-systems/research/yago-naga/aida/) and the [TAC KBP 2010 challenge](https://pdfs.semanticscholar.org/b7fb/11ef06b0dcdc89ef0a5507c6c9ccea4206d8.pdf).
 
-### Data colllection
+## Quickstart instructions
+Download the partially trained model and a set of classes:
+https://s3.amazonaws.com/deeptype/classes.txt
+https://s3.amazonaws.com/deeptype/deeptype-model.tar.gz
+
+Install some required packages:
+```
+pip3 install -r requirements.txt
+pip3 install wikidata_linker_utils_src/
+```
+
+Start up jupyter notebook:
+```
+jupyter notebook
+```
+
+Explore
+http://localhost:8888/notebooks/learning/SentencePredictions.ipynb
+
+### Data collection
 
 Get wikiarticle -> wikidata mapping (all languages) + Get anchor tags, redirections, category links, statistics (per language). To store all wikidata ids, their key properties (`instance of`, `part of`, etc..), and
 a mapping from all wikipedia article names to a wikidata id do as follows,
@@ -82,7 +101,7 @@ Then create an H5 file from each language containing the mapping from tokens to 
 
 ```
 export LANGUAGE=en
-python3 extraction/produce_windowed_h5_tsv.py  /Volumes/Samsung_T3/tahiti/2017-12/${LANGUAGE}_train.tsv /Volumes/Samsung_T3/tahiti/2017-12/${LANGUAGE}_train.h5 /Volumes/Samsung_T3/tahiti/2017-12/${LANGUAGE}_dev.h5 --window_size 10  --validation_start 1000000 --total_size 200500000
+python3 extraction/produce_windowed_h5_tsv.py ${DATA_DIR}${LANGUAGE}_train.tsv ${DATA_DIR}${LANGUAGE}_train.h5 ${DATA_DIR}${LANGUAGE}_dev.h5 --window_size 10  --validation_start 1000000 --total_size 200500000
 ```
 
 Create a training config with all languages, `my_config.json`. Paths to the datasets is relative to config file (e.g. you can place it in the same directory as the dataset h5 files):

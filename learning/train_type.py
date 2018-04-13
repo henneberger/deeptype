@@ -1013,7 +1013,7 @@ def build_recurrent(inputs, cudnn, faux_cudnn, hidden_sizes, is_training,
                 cell_input_size=cell_input_size,
                 input_mode="linear_input",
                 direction="bidirectional")
-            cudnn_cell = CudnnLSTM(num_layers,
+            cudnn_cell = CpuCudnnLSTM(num_layers,
                                    hidden_size,
                                    cell_input_size,
                                    input_mode="linear_input",
